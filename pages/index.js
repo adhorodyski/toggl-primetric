@@ -1,11 +1,16 @@
 import Head from "next/head";
 import { useAtom } from "jotai";
-import { useTogglWorkspaces } from "lib/queries";
+import { useTogglWeeklyReport, useTogglWorkspaces } from "lib/queries";
 import { workspaceAtom } from "lib/atoms";
 
 const Page = () => {
   const { data: workspaces } = useTogglWorkspaces();
-  const [, setWorkspace] = useAtom(workspaceAtom);
+  const [workspace, setWorkspace] = useAtom(workspaceAtom);
+
+  const { data: report } = useTogglWeeklyReport(
+    { workspace_id: workspace?.id, since: "2022-05-10" },
+    { enabled: !!workspace }
+  );
 
   return (
     <div>
@@ -19,6 +24,10 @@ const Page = () => {
             {workspace.name}
           </button>
         ))}
+      </div>
+      <div>
+        <h3>Your report</h3>
+        <pre>{JSON.stringify(report, null, 2)}</pre>
       </div>
     </div>
   );
