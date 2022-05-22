@@ -1,15 +1,20 @@
+import { useState } from "react";
 import Head from "next/head";
 import { useAtom } from "jotai";
+import dayjs from "dayjs";
 import { useTogglWeeklyReport, useTogglWorkspaces } from "lib/queries";
 import { workspaceAtom } from "lib/atoms";
+
+const formattedToday = dayjs().format("YYYY-MM-DD");
 
 const Page = () => {
   const { data: workspaces } = useTogglWorkspaces();
   const [workspace, setWorkspace] = useAtom(workspaceAtom);
+  const [since, setSince] = useState(formattedToday);
 
   const { data: report } = useTogglWeeklyReport(
-    { workspace_id: workspace?.id, since: "2022-05-10" },
-    { enabled: !!workspace }
+    { workspace_id: workspace?.id, since },
+    { enabled: !!workspace && !!since }
   );
 
   return (
@@ -27,6 +32,11 @@ const Page = () => {
       </div>
       <div>
         <h3>Your report</h3>
+        <input
+          type="date"
+          value={since}
+          onChange={({ target }) => setSince(target.value)}
+        />
         <pre>{JSON.stringify(report, null, 2)}</pre>
       </div>
     </div>
