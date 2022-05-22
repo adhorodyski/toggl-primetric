@@ -2,6 +2,7 @@ import { useState } from "react";
 import Head from "next/head";
 import { useAtom } from "jotai";
 import dayjs from "dayjs";
+import { signIn } from "next-auth/react";
 import { useTogglWeeklyReport, useTogglWorkspaces } from "lib/queries";
 import { workspaceAtom } from "lib/atoms";
 
@@ -22,6 +23,9 @@ const Page = () => {
       <Head>
         <title>Toggl + Primetric</title>
       </Head>
+      <button onClick={() => signIn("primetric")}>
+        Sign in with Primetric
+      </button>
       <div>
         <h2>Choose your Toggl workspace</h2>
         {workspaces?.map((workspace) => (
