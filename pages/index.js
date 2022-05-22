@@ -37,7 +37,11 @@ const Page = () => {
           value={since}
           onChange={({ target }) => setSince(target.value)}
         />
-        <pre>{JSON.stringify(report, null, 2)}</pre>
+        {!report?.data.length ? (
+          <p>This week is empty</p>
+        ) : (
+          <pre>{JSON.stringify(report, null, 2)}</pre>
+        )}
       </div>
     </div>
   );
